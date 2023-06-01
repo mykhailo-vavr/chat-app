@@ -17,11 +17,16 @@ export default createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none; 
+    scrollbar-width: none;
   }
 
   a {
     text-decoration: none;
-    color: inherit;
   }
 
   li {

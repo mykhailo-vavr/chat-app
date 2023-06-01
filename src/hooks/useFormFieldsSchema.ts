@@ -12,7 +12,7 @@ import {
   BooleanSchema,
 } from 'yup';
 
-export default () => {
+export const useFormFieldsSchema = () => {
   const required = useCallback(
     (fieldSchema: NumberSchema | StringSchema | DateSchema | BooleanSchema) =>
       fieldSchema.required('This field is required'),

@@ -1,25 +1,17 @@
-import { Button } from '@/components/UI/atoms';
-import { useFetch } from '@/hooks';
-import { FC } from '@/types';
+import { Link } from '@/components/UI/atoms';
+import { webRoutes } from '@/settings';
+import { LandingFC } from './types';
+import { Wrapper } from './styles';
 
-const Landing: FC = () => {
-  const { data, loading, error } = useFetch('https://jsonplaceholder.typicode.com/todos/1');
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error... </div>;
-  }
-
-  return (
-    <div>
-      <h2>Welcome to NextJS starter</h2>
-      <Button>Antd here!!</Button>
-      <pre>{JSON.stringify(data, null, 4)}</pre>
-    </div>
-  );
-};
+const Landing: LandingFC = () => (
+  <Wrapper title="Welcome to Chat app">
+    <p>
+      New one? Join our app <Link href={webRoutes.public.SIGN_UP}>Sign up</Link>
+    </p>
+    <p>
+      Already have an account? <Link href={webRoutes.public.SIGN_IN}>Sign in</Link>
+    </p>
+  </Wrapper>
+);
 
 export default Landing;

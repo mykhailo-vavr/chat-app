@@ -1,8 +1,9 @@
 import { App as AppProvider } from 'antd';
-import { UserProvider } from '@/context/user/provider';
+import { UserProvider } from '@/context/user';
 import { GlobalStyle, lightTheme } from '@/styles';
 import { ThemeProvider } from 'styled-components';
 import { AppFC } from './types';
+import ProtectedRoutes from '../ProtectedRoutes';
 
 const App: AppFC = ({ Component, pageProps }) => {
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -11,7 +12,9 @@ const App: AppFC = ({ Component, pageProps }) => {
     <UserProvider>
       <ThemeProvider theme={lightTheme}>
         <GlobalStyle />
-        <AppProvider>{getLayout(<Component {...pageProps} />)}</AppProvider>
+        <AppProvider>
+          <ProtectedRoutes>{getLayout(<Component {...pageProps} />)}</ProtectedRoutes>
+        </AppProvider>
       </ThemeProvider>
     </UserProvider>
   );

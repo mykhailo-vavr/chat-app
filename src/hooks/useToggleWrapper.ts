@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import useToggle from './useToggle';
+import { useToggle } from './useToggle';
 
-export default (): [(f: (...args: any[]) => void) => (...args: unknown[]) => void, boolean] => {
+export const useToggleWrapper = (): [(f: (...args: any[]) => void) => (...args: unknown[]) => void, boolean] => {
   const [state, toggle] = useToggle();
 
   const wrapper = useCallback(

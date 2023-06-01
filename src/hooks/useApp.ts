@@ -1,3 +1,3 @@
 import { App } from 'antd';
 
-export default App.useApp;
+export const { useApp } = App;

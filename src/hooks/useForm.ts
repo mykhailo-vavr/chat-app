@@ -1,3 +1,3 @@
 import { Form } from 'antd';
 
-export default Form.useForm;
+export const { useForm } = Form;

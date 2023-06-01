@@ -5,7 +5,7 @@ const handlers: UserHandlersType = {
     ...state,
     ...payload,
   }),
-  [UserActionsEnum.CLEAR_USER]: () => null,
+  [UserActionsEnum.CLEAR_USER]: () => ({}),
   [UserActionsEnum.DEFAULT]: (state) => state,
 };
 

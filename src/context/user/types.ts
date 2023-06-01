@@ -1,6 +1,7 @@
+import { User } from '@/api/models';
 import { ReactNode } from 'react';
 
-export type UserState = Record<string, string | number> | null;
+export type UserState = User | Record<string, never>;
 
 export type UserContextType = {
   state: UserState;
