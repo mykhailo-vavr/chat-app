@@ -21,7 +21,7 @@ export const useFetchApi = <T>(url: string, initialConfig?: AxiosRequestConfig) 
         toggle(false);
       }
     },
-    [error, url, apiClient],
+    [error, url],
   );
 
   useEffect(() => {

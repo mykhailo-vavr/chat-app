@@ -17,12 +17,12 @@ const Page: NextPageWithLayout = () => {
   const id = Number(query.id);
 
   if (!id || id < 0 || Math.floor(id) !== id) {
-    push(webRoutes.public.ERROR_404);
+    push(webRoutes.public.ERROR_404).catch(console.error);
     return null;
   }
 
   if (user.id === id) {
-    push(webRoutes.private.PROFILE);
+    push(webRoutes.private.PROFILE).catch(console.error);
     return null;
   }
 

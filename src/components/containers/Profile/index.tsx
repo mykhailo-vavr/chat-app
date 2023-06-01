@@ -2,9 +2,9 @@ import { useUser } from '@/hooks';
 import { Descriptions } from '@/components/UI/molecules';
 import { DescriptionsItem } from '@/components/UI/atoms';
 import { User } from '@/api';
+import { formatDate } from '@/utils';
 import { ProfileFC } from './types';
 import { Wrapper } from './styles';
-import { formatDate } from '@/utils';
 
 const Profile: ProfileFC = () => {
   const user = useUser() as User;
