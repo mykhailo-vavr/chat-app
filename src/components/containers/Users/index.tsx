@@ -13,7 +13,7 @@ import { Wrapper, FiltersWrapper } from './styles';
 const Users: UsersFC = () => {
   const [form] = useForm<UserFilterForm>();
   const { id } = useUser() as User;
-  const { data, loading, refetch } = useGetUsers('', '', id);
+  const { data, loading, refetch } = useGetUsers({ id });
 
   const onChange = useCallback(() => {
     if (loading) {

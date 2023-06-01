@@ -1,5 +1,5 @@
 import { useForm, useRouter, useUser } from '@/hooks';
-import { MessageService, User, useGetMessages, useGetUser } from '@/api';
+import { MessageService, User, useGetMessages, useGetUserByPk } from '@/api';
 import { webRoutes } from '@/settings';
 import { Button, Input, Link } from '@/components/UI/atoms';
 import { formatDate } from '@/utils';
@@ -15,8 +15,8 @@ import { MessagesWrapper, Wrapper, SendMessageWrapper } from './styles';
 const Chat: ChatFC = ({ userId }) => {
   const { push } = useRouter();
   const { id } = useUser() as User;
-  const { data: user, loading: loadingUser } = useGetUser(userId);
-  const { data: messages, refetch, loading: loadingMessages } = useGetMessages(userId, id);
+  const { data: user, loading: loadingUser } = useGetUserByPk(userId);
+  const { data: messages, refetch, loading: loadingMessages } = useGetMessages({ recipientId: userId, senderId: id });
   const [form] = useForm<ChatForm>();
   const messagesWrapperRef = useRef<HTMLUListElement>(null);
 

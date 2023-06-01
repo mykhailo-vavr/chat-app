@@ -1,8 +1,8 @@
 import { apiRoutes } from '@/settings';
 import { useFetchApi } from './useFetchApi';
-import { Message } from '../models';
+import { GetMessageRequest, Message } from '../models';
 
-export const useGetMessages = (senderId?: number, recipientId?: number) =>
+export const useGetMessages = (params: GetMessageRequest) =>
   useFetchApi<Message[]>(apiRoutes.MESSAGES, {
-    params: { senderId, recipientId },
+    params,
   });

@@ -1,8 +1,8 @@
 import { apiRoutes } from '@/settings';
 import { useFetchApi } from './useFetchApi';
-import { User } from '../models';
+import { GetUsersRequest, User } from '../models';
 
-export const useGetUsers = (firstName?: string, lastName?: string, id?: number) =>
+export const useGetUsers = (params: GetUsersRequest) =>
   useFetchApi<User[]>(apiRoutes.USERS, {
-    params: { firstName, lastName, id },
+    params,
   });
