@@ -57,7 +57,7 @@ const VerifyCode: VerifyCodeFC = () => {
         toggleLoading();
       }
     })().catch(console.error);
-  }, [form, push, toggleLoading]);
+  }, [form, push, setUserState, toggleLoading]);
 
   return (
     <Wrapper title="Verify code form">
