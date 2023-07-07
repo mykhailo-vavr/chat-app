@@ -8,7 +8,7 @@ export const useUser = () => {
   return useMemo(
     () => ({
       ...state,
-      isAuthenticated: !!Object.values(state).length && TokenService.get.access() && TokenService.get.refresh(),
+      isAuthenticated: Boolean(state.id && TokenService.get.access() && TokenService.get.refresh()),
     }),
     [state],
   );

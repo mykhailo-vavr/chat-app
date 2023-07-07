@@ -1,7 +1,7 @@
 import { User } from '@/api/models';
 import { ReactNode } from 'react';
 
-export type UserState = User | Record<string, never>;
+export type UserState = Omit<User, 'password'>;
 
 export type UserContextType = {
   state: UserState;

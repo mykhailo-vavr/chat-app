@@ -1,24 +1,27 @@
 import { useForm, useRouter, useUser } from '@/hooks';
-import { MessageService, User, useGetMessages, useGetUserByPk } from '@/api';
+import { MessageService, useGetMessages, useGetUserByPk } from '@/api';
 import { webRoutes } from '@/settings';
 import { Button, Input, Link } from '@/components/UI/atoms';
 import { formatDate } from '@/utils';
 import { useCallback, useEffect, useRef } from 'react';
 import { Form } from '@/components/UI/organisms';
 import { FormItem } from '@/components/UI/molecules';
+import { useSocketContext } from '@/context/socket';
 import { ChatFC, ChatForm } from './types';
 import { MessagesWrapper, Wrapper, SendMessageWrapper } from './styles';
 
 // TODO: async wrapper inside Button component
-// TODO: fix useUser hook return type
 
 const Chat: ChatFC = ({ userId }) => {
   const { push } = useRouter();
-  const { id } = useUser() as User;
+  const { id } = useUser();
   const { data: user, loading: loadingUser } = useGetUserByPk(userId);
   const { data: messages, refetch, loading: loadingMessages } = useGetMessages({ recipientId: userId, senderId: id });
   const [form] = useForm<ChatForm>();
   const messagesWrapperRef = useRef<HTMLUListElement>(null);
+
+  const a = useSocketContext();
+  console.info(a);
 
   useEffect(() => {
     if (!messagesWrapperRef.current) {

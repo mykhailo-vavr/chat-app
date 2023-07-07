@@ -1,12 +1,23 @@
-import { FC, useEffect, useMemo, useReducer, useState } from 'react';
+import { useEffect, useMemo, useReducer, useState } from 'react';
 import { TokenService } from '@/services';
 import { UserService } from '@/api/services';
+import { FCWithChildren } from '@/types';
 import { UserContext } from './context';
-import { UserActionsEnum, UserContextType, UserProviderProps } from './types';
+import { UserActionsEnum, UserContextType, UserState } from './types';
 import { reducer } from './reducer';
 
-export const UserProvider: FC<UserProviderProps> = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, {});
+const initialState: UserState = {
+  id: 0,
+  firstName: '',
+  lastName: '',
+  phone: '',
+  email: '',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
+export const UserProvider: FCWithChildren = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
   const [loading, setLoading] = useState(true);
 
   const contextValue: UserContextType = useMemo(

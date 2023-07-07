@@ -1,6 +1,5 @@
 export * from './useFetch';
 export * from './useToggle';
-export * from './useToggleWrapper';
 export * from './useUser';
 export * from './useApp';
 export * from './useForm';
