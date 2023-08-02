@@ -1,48 +1,43 @@
+import { TokensTypeEnum } from '@/types';
 import { decode, getItem, removeItem, setItem } from '@/utils';
-import { JwtPayload } from 'jsonwebtoken';
 
 export class TokenService {
   static get get() {
     return {
-      verification: () => getItem('verificationToken'),
-      access: () => getItem('accessToken'),
-      refresh: () => getItem('refreshToken'),
+      verification: () => getItem(TokensTypeEnum.VERIFICATION_TOKEN),
+      access: () => getItem(TokensTypeEnum.ACCESS_TOKEN),
+      refresh: () => getItem(TokensTypeEnum.REFRESH_TOKEN),
     };
   }
 
   static get set() {
     return {
-      verification: (token: string) => setItem('verificationToken', token),
-      access: (token: string) => setItem('accessToken', token),
-      refresh: (token: string) => setItem('refreshToken', token),
+      verification: (token: string) => setItem(TokensTypeEnum.VERIFICATION_TOKEN, token),
+      access: (token: string) => setItem(TokensTypeEnum.ACCESS_TOKEN, token),
+      refresh: (token: string) => setItem(TokensTypeEnum.REFRESH_TOKEN, token),
     };
   }
 
   static get remove() {
     return {
-      verification: () => removeItem('verificationToken'),
-      access: () => removeItem('accessToken'),
-      refresh: () => removeItem('refreshToken'),
+      verification: () => removeItem(TokensTypeEnum.VERIFICATION_TOKEN),
+      access: () => removeItem(TokensTypeEnum.ACCESS_TOKEN),
+      refresh: () => removeItem(TokensTypeEnum.REFRESH_TOKEN),
     };
   }
 
   static get decode() {
     return {
       verification: () => {
-        const result = decode(this.get.verification() || '') as
-          | null
-          | (JwtPayload & { user: { id: number; email: string } });
-
+        const result = decode<{ user: { id: number; email: string } }>(this.get.verification() || '');
         return result;
       },
       access: () => {
-        const result = decode(this.get.access() || '') as null | (JwtPayload & { user: { id: number } });
-
+        const result = decode<{ user: { id: number } }>(this.get.access() || '');
         return result;
       },
       refresh: () => {
-        const result = decode(this.get.refresh() || '') as null | (JwtPayload & { user: { id: number } });
-
+        const result = decode<{ user: { id: number } }>(this.get.refresh() || '');
         return result;
       },
     };

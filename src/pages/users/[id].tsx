@@ -3,12 +3,12 @@ import { MainLayout } from '@/components/layouts';
 import { NextPageWithLayout } from '@/types';
 import { webRoutes } from '@/settings';
 import { useRouter } from 'next/router';
-import { useUser } from '@/hooks';
-import { User } from '@/api';
+import { useRedirect, useUser } from '@/hooks';
 
 const Page: NextPageWithLayout = () => {
-  const { query, push, isReady } = useRouter();
-  const user = useUser() as User;
+  const { query, isReady } = useRouter();
+  const redirect = useRedirect();
+  const user = useUser();
 
   if (!isReady) {
     return null;
@@ -17,13 +17,11 @@ const Page: NextPageWithLayout = () => {
   const id = Number(query.id);
 
   if (!id || id < 0 || Math.floor(id) !== id) {
-    push(webRoutes.public.ERROR_404).catch(console.error);
-    return null;
+    redirect(webRoutes.public.ERROR_404);
   }
 
   if (user.id === id) {
-    push(webRoutes.private.PROFILE).catch(console.error);
-    return null;
+    redirect(webRoutes.private.PROFILE);
   }
 
   return <Chat userId={id} />;

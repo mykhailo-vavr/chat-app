@@ -1,8 +1,8 @@
-import { AxiosRequestConfig } from 'axios';
+import { ExtendedApiRoute, RequestConfig } from '@/types';
 import { TokenService } from '@/services';
 import { apiClient } from '../client';
 
-export const getApiData = async <T = any>(url: string, config?: AxiosRequestConfig) => {
+export const getApiData = async <T = any>(url: ExtendedApiRoute, config?: RequestConfig) => {
   if (!config?.headers?.Authorization) {
     apiClient.defaults.headers.common.Authorization = TokenService.get.access();
   }
@@ -16,7 +16,7 @@ export const getApiData = async <T = any>(url: string, config?: AxiosRequestConf
   }
 };
 
-export const postApiData = async <T = any, D = any>(url: string, data: D, config?: AxiosRequestConfig) => {
+export const postApiData = async <T = any, D = any>(url: ExtendedApiRoute, data: D, config?: RequestConfig) => {
   if (!config?.headers?.Authorization) {
     apiClient.defaults.headers.common.Authorization = TokenService.get.access();
   }

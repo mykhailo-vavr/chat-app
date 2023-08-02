@@ -1,37 +1,41 @@
 import { ReactElement, useEffect, useMemo, useState } from 'react';
-import { useRouter, useSignOut, useUser } from '@/hooks';
+import { useRedirect, useRouter, useSignOut, useUser } from '@/hooks';
 import { webRoutes } from '@/settings';
-import { FCWithChildren } from '@/types';
+import { FCWithChildren, PublicWebRoute } from '@/types';
 import { TokenService } from '@/services';
 import { AuthenticateService } from '@/api';
 
 const ProtectedRoutes: FCWithChildren = ({ children }) => {
   const { isAuthenticated } = useUser();
-  const { push, pathname } = useRouter();
+  const { pathname } = useRouter();
+  const redirect = useRedirect();
   const signOut = useSignOut();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const accessToken = TokenService.get.refresh();
+    const accessToken = TokenService.get.access();
     const refreshToken = TokenService.get.refresh();
 
     const asyncWrapper = async () => {
-      // To sign out when clear localStorage
-      if ((!accessToken || !refreshToken) && isAuthenticated) {
-        signOut();
-        return;
-      }
-
       if (!isAuthenticated) {
         return;
       }
 
-      if (TokenService.expired.access() && TokenService.expired.refresh()) {
+      // To sign out when clear localStorage
+      if (!accessToken || !refreshToken) {
         signOut();
         return;
       }
 
-      if (TokenService.expired.access() && refreshToken) {
+      const isAccessTokenExpired = TokenService.expired.access();
+      const isRefreshTokenExpired = TokenService.expired.refresh();
+
+      if (isAccessTokenExpired && isRefreshTokenExpired) {
+        signOut();
+        return;
+      }
+
+      if (isAccessTokenExpired && !isRefreshTokenExpired) {
         setLoading(true);
         const { data } = await AuthenticateService.refreshToken({ refreshToken });
 
@@ -49,7 +53,7 @@ const ProtectedRoutes: FCWithChildren = ({ children }) => {
       .finally(() => setLoading(false));
   });
 
-  const isPublicRoute = useMemo(() => Object.values(webRoutes.public).includes(pathname), [pathname]);
+  const isPublicRoute = useMemo(() => Object.values(webRoutes.public).includes(pathname as PublicWebRoute), [pathname]);
 
   if (loading) {
     return null;
@@ -60,8 +64,7 @@ const ProtectedRoutes: FCWithChildren = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    push(webRoutes.public.ERROR_404).catch(console.error);
-    return null;
+    redirect(webRoutes.public.ERROR_404);
   }
 
   return children as ReactElement;

@@ -1,4 +1,4 @@
-import { useForm, useRouter, useUser } from '@/hooks';
+import { useForm, useRedirect, useUser } from '@/hooks';
 import { MessageService, useGetMessages, useGetUserByPk } from '@/api';
 import { webRoutes } from '@/settings';
 import { Button, Input, Link } from '@/components/UI/atoms';
@@ -10,10 +10,8 @@ import { useSocketContext } from '@/context/socket';
 import { ChatFC, ChatForm } from './types';
 import { MessagesWrapper, Wrapper, SendMessageWrapper } from './styles';
 
-// TODO: async wrapper inside Button component
-
 const Chat: ChatFC = ({ userId }) => {
-  const { push } = useRouter();
+  const redirect = useRedirect();
   const { id } = useUser();
   const { data: user, loading: loadingUser } = useGetUserByPk(userId);
   const { data: messages, refetch, loading: loadingMessages } = useGetMessages({ recipientId: userId, senderId: id });
@@ -48,7 +46,7 @@ const Chat: ChatFC = ({ userId }) => {
   }, [form, id, refetch, userId]);
 
   if (!user && !loadingUser) {
-    push(webRoutes.public.ERROR_404).catch(console.error);
+    redirect(webRoutes.public.ERROR_404);
     return null;
   }
 

@@ -1,4 +1,4 @@
-import { useForm, useFormFieldsSchema, useRouter, useToggle, useYupSchema } from '@/hooks';
+import { useForm, useFormFieldsSchema, useRedirect, useToggle, useYupSchema } from '@/hooks';
 import { Form } from '@/components/UI/organisms';
 import { FormItem } from '@/components/UI/molecules';
 import { Button, Input, InputPassword } from '@/components/UI/atoms';
@@ -11,7 +11,7 @@ import { Wrapper } from './styles';
 const SignUp: SignUpFC = () => {
   const [form] = useForm<SignUpForm>();
   const [loading, toggleLoading] = useToggle();
-  const { push } = useRouter();
+  const redirect = useRedirect();
 
   const { requiredEmail, requiredString, requiredOnlyLetters } = useFormFieldsSchema();
 
@@ -37,14 +37,14 @@ const SignUp: SignUpFC = () => {
           return;
         }
 
-        push(webRoutes.public.SIGN_IN).catch(console.error);
+        redirect(webRoutes.public.SIGN_IN);
       } catch (e) {
         console.error(e);
       } finally {
         toggleLoading();
       }
     })().catch(console.error);
-  }, [form, push, toggleLoading]);
+  }, [form, redirect, toggleLoading]);
 
   return (
     <Wrapper title="Sign up form">

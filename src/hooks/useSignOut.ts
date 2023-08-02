@@ -2,10 +2,10 @@ import { useUserContext } from '@/context/user';
 import { TokenService } from '@/services';
 import { webRoutes } from '@/settings';
 import { useCallback } from 'react';
-import { useRouter } from './useRouter';
+import { useRedirect } from './useRedirect';
 
 export const useSignOut = () => {
-  const { push } = useRouter();
+  const redirect = useRedirect();
   const { clearUserState } = useUserContext();
 
   return useCallback(() => {
@@ -16,10 +16,10 @@ export const useSignOut = () => {
       clearUserState();
 
       setTimeout(() => {
-        push(webRoutes.public.LANDING_PAGE).catch(console.error);
+        redirect(webRoutes.public.LANDING_PAGE);
       });
     };
 
     asyncWrapper().catch(console.error);
-  }, [clearUserState, push]);
+  }, [clearUserState, redirect]);
 };

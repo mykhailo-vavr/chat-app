@@ -1,6 +1,7 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import { RequestConfig } from '@/types';
+import axios from 'axios';
 
-export const getData = async <T = any>(url: string, config?: AxiosRequestConfig) => {
+export const getData = async <T = any>(url: string, config?: RequestConfig) => {
   try {
     const res = await axios.get<T>(url, config);
     return { data: res.data, res };
@@ -10,7 +11,7 @@ export const getData = async <T = any>(url: string, config?: AxiosRequestConfig)
   }
 };
 
-export const postData = async <T = any, D = any>(url: string, data: D, config?: AxiosRequestConfig) => {
+export const postData = async <T = any, D = any>(url: string, data: D, config?: RequestConfig) => {
   try {
     const res = await axios.post<T>(url, data, config);
     return { data: res.data, res };

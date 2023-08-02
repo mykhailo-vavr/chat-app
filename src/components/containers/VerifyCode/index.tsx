@@ -1,4 +1,4 @@
-import { useForm, useFormFieldsSchema, useRouter, useToggle, useYupSchema } from '@/hooks';
+import { useForm, useFormFieldsSchema, useRedirect, useToggle, useYupSchema } from '@/hooks';
 import { Form } from '@/components/UI/organisms';
 import { FormItem } from '@/components/UI/molecules';
 import { Button, Input } from '@/components/UI/atoms';
@@ -13,7 +13,7 @@ import { Wrapper } from './styles';
 const VerifyCode: VerifyCodeFC = () => {
   const [form] = useForm<VerifyCodeForm>();
   const [loading, toggleLoading] = useToggle();
-  const { push } = useRouter();
+  const redirect = useRedirect();
   const { setUserState } = useUserContext();
 
   const { requiredString } = useFormFieldsSchema();
@@ -50,14 +50,14 @@ const VerifyCode: VerifyCodeFC = () => {
         TokenService.remove.verification();
         await setUserState();
 
-        push(webRoutes.private.PROFILE).catch(console.error);
+        redirect(webRoutes.private.PROFILE);
       } catch (e) {
         console.error(e);
       } finally {
         toggleLoading();
       }
     })().catch(console.error);
-  }, [form, push, setUserState, toggleLoading]);
+  }, [form, redirect, setUserState, toggleLoading]);
 
   return (
     <Wrapper title="Verify code form">

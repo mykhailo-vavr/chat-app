@@ -1,16 +1,16 @@
-import { AxiosError, AxiosRequestConfig } from 'axios';
 import { useCallback, useEffect, useState } from 'react';
+import { ExtendedApiRoute, RequestConfig, RequestError } from '@/types';
 import { apiClient } from '../client';
 
 // TODO: Check useToggle hook
 
-export const useFetchApi = <T>(url: string, initialConfig?: AxiosRequestConfig) => {
+export const useFetchApi = <T>(url: ExtendedApiRoute, initialConfig?: RequestConfig) => {
   const [loading, toggle] = useState(true);
   const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState<AxiosError | null>(null);
+  const [error, setError] = useState<RequestError | null>(null);
 
   const fetchData = useCallback(
-    async (config?: AxiosRequestConfig) => {
+    async (config?: RequestConfig) => {
       try {
         toggle(true);
         const res = await apiClient.get<T>(url, config);

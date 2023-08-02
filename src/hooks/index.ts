@@ -7,3 +7,5 @@ export * from './useFormFieldsSchema';
 export * from './useYupSchema';
 export * from './useRouter';
 export * from './useSignOut';
+export * from './useRedirectToProfile';
+export * from './useRedirect';

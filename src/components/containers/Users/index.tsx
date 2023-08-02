@@ -1,4 +1,4 @@
-import { User, useGetUsers } from '@/api';
+import { useGetUsers } from '@/api';
 import { Button, Input, Link, ListItem } from '@/components/UI/atoms';
 import { FormItem, List } from '@/components/UI/molecules';
 import { webRoutes } from '@/settings';
@@ -12,7 +12,7 @@ import { Wrapper, FiltersWrapper } from './styles';
 
 const Users: UsersFC = () => {
   const [form] = useForm<UserFilterForm>();
-  const { id } = useUser() as User;
+  const { id } = useUser();
   const { data, loading, refetch } = useGetUsers({ id });
 
   const onChange = useCallback(() => {

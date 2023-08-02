@@ -10,7 +10,7 @@ export const webRoutes = {
     USERS: '/users',
     PROFILE: '/profile',
   },
-};
+} as const;
 
 export const apiRoutes = {
   BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || '',
@@ -20,4 +20,4 @@ export const apiRoutes = {
   REFRESH_TOKEN: '/auth/refresh-token',
   USERS: '/users',
   MESSAGES: '/messages',
-};
+} as const;

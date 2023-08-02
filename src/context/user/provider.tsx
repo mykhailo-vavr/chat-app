@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useReducer, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { TokenService } from '@/services';
 import { UserService } from '@/api/services';
 import { FCWithChildren } from '@/types';
 import { UserContext } from './context';
-import { UserActionsEnum, UserContextType, UserState } from './types';
-import { reducer } from './reducer';
+import { UserContextType, UserState } from './types';
 
 const initialState: UserState = {
   id: 0,
@@ -17,32 +16,36 @@ const initialState: UserState = {
 };
 
 export const UserProvider: FCWithChildren = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [user, setUser] = useState(initialState);
   const [loading, setLoading] = useState(true);
+
+  const setUserState = useCallback(async () => {
+    const accessToken = TokenService.decode.access();
+
+    if (!accessToken?.user?.id) {
+      return;
+    }
+
+    const { data } = await UserService.getUser(accessToken.user.id);
+
+    if (!data) {
+      return;
+    }
+
+    setUser(data);
+  }, []);
+
+  const clearUserState = useCallback(() => {
+    setUser(initialState);
+  }, []);
 
   const contextValue: UserContextType = useMemo(
     () => ({
-      state,
-      async setUserState() {
-        const accessToken = TokenService.decode.access();
-
-        if (!accessToken?.user?.id) {
-          return;
-        }
-
-        const { data } = await UserService.getUser(accessToken.user.id);
-
-        if (!data) {
-          return;
-        }
-
-        dispatch({ type: UserActionsEnum.SET_USER, payload: data });
-      },
-      clearUserState() {
-        dispatch({ type: UserActionsEnum.CLEAR_USER });
-      },
+      state: user,
+      setUserState,
+      clearUserState,
     }),
-    [state],
+    [clearUserState, setUserState, user],
   );
 
   useEffect(() => {

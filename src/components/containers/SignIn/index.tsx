@@ -1,4 +1,4 @@
-import { useForm, useFormFieldsSchema, useRouter, useToggle, useYupSchema } from '@/hooks';
+import { useForm, useFormFieldsSchema, useRedirect, useToggle, useYupSchema } from '@/hooks';
 import { Form } from '@/components/UI/organisms';
 import { FormItem } from '@/components/UI/molecules';
 import { Button, Input, InputPassword, Link } from '@/components/UI/atoms';
@@ -12,8 +12,7 @@ import { Wrapper } from './styles';
 const SignIn: SignInFC = () => {
   const [form] = useForm<SignInForm>();
   const [loading, toggleLoading] = useToggle();
-  const { push } = useRouter();
-
+  const redirect = useRedirect();
   const { requiredEmail, requiredString } = useFormFieldsSchema();
 
   const schema = useYupSchema({
@@ -37,14 +36,14 @@ const SignIn: SignInFC = () => {
 
         TokenService.set.verification(data.verificationToken);
 
-        push(webRoutes.public.VERIFY_CODE).catch(console.error);
+        redirect(webRoutes.public.VERIFY_CODE);
       } catch (e) {
         console.error(e);
       } finally {
         toggleLoading();
       }
     })().catch(console.error);
-  }, [form, push, toggleLoading]);
+  }, [form, redirect, toggleLoading]);
 
   return (
     <Wrapper title="Sign in form">
