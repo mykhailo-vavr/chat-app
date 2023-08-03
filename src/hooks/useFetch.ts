@@ -13,13 +13,14 @@ export const useFetch = <T = Record<string, unknown>>(url: string, initialConfig
         toggle(true);
         const res = await axios.get<T>(url, config);
         setData(res.data);
+        setError(null);
       } catch (e) {
-        setError(error);
+        setError(e as RequestError);
       } finally {
         toggle(false);
       }
     },
-    [error, url],
+    [url],
   );
 
   useEffect(() => {

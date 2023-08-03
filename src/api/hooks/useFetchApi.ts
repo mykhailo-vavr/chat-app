@@ -15,13 +15,14 @@ export const useFetchApi = <T>(url: ExtendedApiRoute, initialConfig?: RequestCon
         toggle(true);
         const res = await apiClient.get<T>(url, config);
         setData(res.data);
+        setError(null);
       } catch (e) {
-        setError(error);
+        setError(e as RequestError);
       } finally {
         toggle(false);
       }
     },
-    [error, url],
+    [url],
   );
 
   useEffect(() => {
